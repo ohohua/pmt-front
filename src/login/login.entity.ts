@@ -1,13 +1,12 @@
 import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
-@Entity('login')
-export class superUser {
+@Entity()
+export class Login {
   @PrimaryGeneratedColumn()
-  id: number; // 标记为主列，值自动生成
+  id: number;
 
-  @Column({ length: 50 })
+  @Column({ length: 20 })
   account: string;
 
   @Column({ length: 20 })
   password: string;
-
 }
