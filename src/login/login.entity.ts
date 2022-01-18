@@ -5,7 +5,6 @@ import {
   CreateDateColumn,
   UpdateDateColumn,
   BeforeInsert,
-  BeforeUpdate,
 } from 'typeorm';
 // import { Exclude } from 'class-transformer';
 import * as bcrypt from 'bcrypt';
