@@ -7,7 +7,7 @@ async function bootstrap() {
   app.setGlobalPrefix('api'); // 设置全局路由前缀
 
   const options = new DocumentBuilder()
-    .setTitle('Cats example')
+    .setTitle('pmt')
     .setDescription('The cats API description')
     .setVersion('1.0')
     .addTag('cats')

@@ -5,14 +5,17 @@ import {
   CreateDateColumn,
   UpdateDateColumn,
   BeforeInsert,
+  BeforeUpdate,
 } from 'typeorm';
 // import { Exclude } from 'class-transformer';
+import * as bcrypt from 'bcrypt';
+
 @Entity('user')
 export class User {
   @PrimaryGeneratedColumn('uuid')
   id: number;
 
-  @Column({ length: 20 })
+  @Column({ length: 100 })
   username: string; // 用户名
 
   // @Column({ length: 20, default: () => null })
@@ -21,7 +24,7 @@ export class User {
   @Column('simple-enum', { enum: ['root', 'doctor', 'patient'] })
   role: string; // 用户角色
 
-  @Column({ length: 20, select: false })
+  @Column({ length: 100, select: false })
   password: string;
 
   @CreateDateColumn({})
@@ -32,6 +35,8 @@ export class User {
 
   @BeforeInsert()
   async encryptPwd() {
-    // this.password = await bcrypt.hashSync(this.password);
+    // 加盐
+    const salt = await bcrypt.genSalt();
+    this.password = await bcrypt.hash(this.password, salt);
   }
 }
