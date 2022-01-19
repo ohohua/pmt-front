@@ -25,7 +25,7 @@ export class LocalStrategy extends PassportStrategy(Strategy) {
       .getOne();
 
     if (!user) {
-      throw new BadRequestException('用户名不正确！');
+      throw new BadRequestException('账号不正确！');
     }
 
     if (!(await bcrypt.compare(password, user.password))) {
