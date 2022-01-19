@@ -23,7 +23,8 @@ export class AuthController {
   @ApiOperation({ summary: '用户登录' })
   @Post('login')
   async login(@Body() user: User, @Req() req) {
-    return Object.assign(req.user, await this.authService.login(req.user));
+    // return Object.assign(req.user, await this.authService.login(req.user));
+    return await this.authService.login(req.user);
   }
 
   // 这是一个例子

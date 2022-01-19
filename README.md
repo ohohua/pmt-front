@@ -71,3 +71,10 @@ Nest is an MIT-licensed open source project. It can grow thanks to the sponsors 
 ## License
 
 Nest is [MIT licensed](LICENSE).
+
+
+## 用到的技术
+- crypto-js
+  - 前端用该技术对密码加密传输， 然后这边用约定好的秘钥和偏移量进行解密
+- bcrypt
+  - 用该加密方式对传入数据库的密码进行加密，该过程不可逆
