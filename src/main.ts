@@ -14,9 +14,9 @@ async function bootstrap() {
 
   const options = new DocumentBuilder()
     .setTitle('pmt')
-    .setDescription('The cats API description')
+    .setDescription('心理医疗系统')
     .setVersion('1.0')
-    .addTag('cats')
+    .addTag('lirui')
     .build();
   const document = SwaggerModule.createDocument(app, options);
   SwaggerModule.setup('api', app, document);

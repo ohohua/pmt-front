@@ -23,16 +23,18 @@ export class AuthController {
   @ApiOperation({ summary: '用户登录' })
   @Post('login')
   async login(@Body() user: User, @Req() req) {
-    // return Object.assign(req.user, await this.authService.login(req.user));
     return await this.authService.login(req.user);
   }
 
   // 这是一个例子
-  @ApiOperation({ summary: '获取用户信息' })
+  @ApiOperation({ summary: '获取用户信息（例子）' })
   @ApiBearerAuth() // swagger文档设置token
   @UseGuards(AuthGuard('jwt')) // 添加jwt认证守卫：
   @Get()
-  getUserInfo(@Req() req) {
-    return req.user;
+  async getUserInfo(@Body() user: User, @Req() req) {
+    console.log(req);
+
+    // return req.user;
+    return this.authService.getUser(req.user);
   }
 }

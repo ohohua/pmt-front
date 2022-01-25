@@ -17,14 +17,23 @@ export class User {
   @Column({ length: 100 })
   username: string; // 用户名
 
-  // @Column({ length: 20, default: () => null })
-  // nickname: string; //昵称
+  @Column({ length: 100, default: () => null })
+  nickname: string; //昵称
 
   @Column('simple-enum', { enum: ['root', 'doctor', 'patient'] })
   role: string; // 用户角色
 
   @Column({ length: 100, select: false })
   password: string;
+
+  @Column()
+  praiseQuantity: number; // 点赞数量
+
+  @Column()
+  answerNumber: number; // 回答数量
+
+  @Column()
+  isNew: boolean; // 新用户
 
   @CreateDateColumn({})
   createTime: Date;
