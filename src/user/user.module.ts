@@ -7,9 +7,11 @@ import { PassportModule } from '@nestjs/passport';
 import { JwtModule } from '@nestjs/jwt';
 import { jwtContants } from '../auth/jwt.contants';
 import { JwtStorage } from '../auth/jwt.strategy';
+import { Disease } from './disease.entity';
+
 @Module({
   imports: [
-    TypeOrmModule.forFeature([User]),
+    TypeOrmModule.forFeature([User, Disease]),
     PassportModule,
     JwtStorage,
     JwtModule.register({

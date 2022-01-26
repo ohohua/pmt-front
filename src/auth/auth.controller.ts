@@ -32,8 +32,6 @@ export class AuthController {
   @UseGuards(AuthGuard('jwt')) // 添加jwt认证守卫：
   @Get()
   async getUserInfo(@Body() user: User, @Req() req) {
-    console.log(req);
-
     // return req.user;
     return this.authService.getUser(req.user);
   }

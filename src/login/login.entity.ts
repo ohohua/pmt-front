@@ -26,13 +26,13 @@ export class User {
   @Column({ length: 100, select: false })
   password: string;
 
-  @Column()
+  @Column({ default: () => 0 })
   praiseQuantity: number; // 点赞数量
 
-  @Column()
+  @Column({ default: () => 0 })
   answerNumber: number; // 回答数量
 
-  @Column()
+  @Column({ default: () => false })
   isNew: boolean; // 新用户
 
   @CreateDateColumn({})
