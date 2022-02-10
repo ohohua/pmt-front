@@ -14,18 +14,31 @@ export class UserService {
 
   async getUser(user: Partial<User>): Promise<User> {
     // return true;
-    return await this.userRepository.findOne({
+    const data = await this.userRepository.findOne({
       where: { username: user.username, role: user.role },
     });
+    // if(data.avatar.length) {
+    //   data.avatar = `http://localhost:9088/user/${data.avatar.split('\\')[2]}`
+    // }
+    return data;
   }
 
-  async getParticularUser(role: string): Promise<User> {
+  async getParticularUser(user): Promise<User> {
+    if(!user.sort) {
+      user.sort = 'updateTime';
+    }
+    if(user.isNew) {
+      return await this.userRepository.query(
+        `SELECT id,username,role,nickname,avatar,createTime,updateTime, praiseQuantity, answerNumber, isNew FROM USER WHERE role='${user.role}' AND isNew=1 ORDER BY ${user.sort} DESC`,
+      );
+    }
     return await this.userRepository.query(
-      `SELECT id,username,role,nickname,createTime,updateTime,praiseQuantity, answerNumber, isNew FROM USER WHERE role='${role}'`,
+      `SELECT id,username,role,nickname,avatar,createTime,updateTime, praiseQuantity, answerNumber, isNew FROM USER WHERE role='${user.role}' ORDER BY ${user.sort} DESC`,
     );
   }
 
   async saveSymptom(disease: Disease): Promise<Disease> {
+    console.log(disease)
     return await this.diseaseRepository.save(disease);
   }
 
@@ -41,5 +54,26 @@ export class UserService {
     
     
     return '更新成功';
+  }
+
+  async loadAboutDocUnderPatient(doc: string):Promise<Disease> {
+    return await this.userRepository.query(`
+    SELECT username, name, age,sex, bloodType, phone, symptom, createTime, updateDate, doctorUsername FROM DISEASE WHERE doctorUsername='${doc}'`);
+
+  }
+
+
+  async loaBbyName(username: string): Promise<Disease> {
+    return await this.userRepository.query(`
+    SELECT username, name, age,sex, bloodType, phone, symptom, createTime, updateDate, doctorUsername FROM DISEASE WHERE username='${username}'`);
+  }
+
+  async uploadAvatar(data): Promise<void> {
+     await this.userRepository.update({id: data.id},{avatar: data.avatar});
+  }
+
+  async uploadUser(data):Promise<string> {
+    await this.userRepository.update({id: data.id}, {username: data.username, nickname: data.nickname})
+    return '修改成功！'
   }
 }

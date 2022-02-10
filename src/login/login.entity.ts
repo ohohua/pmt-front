@@ -19,6 +19,9 @@ export class User {
 
   @Column({ length: 100, default: () => null })
   nickname: string; //昵称
+  
+  @Column({length: 100, default: () => null})
+  avatar: string; 
 
   @Column('simple-enum', { enum: ['root', 'doctor', 'patient'] })
   role: string; // 用户角色
