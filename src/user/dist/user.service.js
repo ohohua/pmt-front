@@ -65,9 +65,6 @@ var UserService = /** @class */ (function () {
                         })];
                     case 1:
                         data = _a.sent();
-                        // if(data.avatar.length) {
-                        //   data.avatar = `http://localhost:9088/user/${data.avatar.split('\\')[2]}`
-                        // }
                         return [2 /*return*/, data];
                 }
             });
@@ -94,9 +91,7 @@ var UserService = /** @class */ (function () {
         return __awaiter(this, void 0, Promise, function () {
             return __generator(this, function (_a) {
                 switch (_a.label) {
-                    case 0:
-                        console.log(disease);
-                        return [4 /*yield*/, this.diseaseRepository.save(disease)];
+                    case 0: return [4 /*yield*/, this.diseaseRepository.save(disease)];
                     case 1: return [2 /*return*/, _a.sent()];
                 }
             });
@@ -130,7 +125,7 @@ var UserService = /** @class */ (function () {
         return __awaiter(this, void 0, Promise, function () {
             return __generator(this, function (_a) {
                 switch (_a.label) {
-                    case 0: return [4 /*yield*/, this.userRepository.query("\n    SELECT username, name, age,sex, bloodType, phone, symptom, createTime, updateDate, doctorUsername FROM DISEASE WHERE doctorUsername='" + doc + "'")];
+                    case 0: return [4 /*yield*/, this.userRepository.query("\n    SELECT username, name, age,sex, bloodType, phone, symptom, createTime, updateDate, doctorUsername FROM DISEASE WHERE doctorUsername='" + doc + "' AND response = \"\"")];
                     case 1: return [2 /*return*/, _a.sent()];
                 }
             });
@@ -142,6 +137,18 @@ var UserService = /** @class */ (function () {
                 switch (_a.label) {
                     case 0: return [4 /*yield*/, this.userRepository.query("\n    SELECT username, name, age,sex, bloodType, phone, symptom, createTime, updateDate, doctorUsername FROM DISEASE WHERE username='" + username + "'")];
                     case 1: return [2 /*return*/, _a.sent()];
+                }
+            });
+        });
+    };
+    UserService.prototype.saveResponse = function (user) {
+        return __awaiter(this, void 0, Promise, function () {
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0: return [4 /*yield*/, this.diseaseRepository.update({ username: user.username }, { response: user.response })];
+                    case 1:
+                        _a.sent();
+                        return [2 /*return*/];
                 }
             });
         });

@@ -128,6 +128,13 @@ var UserController = /** @class */ (function () {
             });
         });
     };
+    UserController.prototype.saveResponse = function (user) {
+        return __awaiter(this, void 0, void 0, function () {
+            return __generator(this, function (_a) {
+                return [2 /*return*/, this.userService.saveResponse(user)];
+            });
+        });
+    };
     /**
      * 保存上传的头像
      * @param file 上传的图片信息
@@ -198,6 +205,12 @@ var UserController = /** @class */ (function () {
         common_1.Get('loadByName'),
         __param(0, common_1.Query())
     ], UserController.prototype, "loaBbyName");
+    __decorate([
+        swagger_1.ApiOperation({ summary: '保存医生的治疗建议' }),
+        common_1.UseGuards(passport_1.AuthGuard('jwt')),
+        common_1.Post('saveResponse'),
+        __param(0, common_1.Body())
+    ], UserController.prototype, "saveResponse");
     __decorate([
         swagger_1.ApiOperation({ summary: '上传头像' }),
         common_1.UseGuards(passport_1.AuthGuard('jwt')),

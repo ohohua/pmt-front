@@ -94,6 +94,13 @@ export class UserController {
   async loaBbyName(@Query() { username }) {
     return this.userService.loaBbyName(username);
   }
+
+  @ApiOperation({ summary: '保存医生的治疗建议' })
+  @UseGuards(AuthGuard('jwt'))
+  @Post('saveResponse')
+  async saveResponse(@Body() user) {
+    return this.userService.saveResponse(user);
+  }
   /**
    * 保存上传的头像
    * @param file 上传的图片信息

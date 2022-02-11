@@ -17,9 +17,6 @@ export class UserService {
     const data = await this.userRepository.findOne({
       where: { username: user.username, role: user.role },
     });
-    // if(data.avatar.length) {
-    //   data.avatar = `http://localhost:9088/user/${data.avatar.split('\\')[2]}`
-    // }
     return data;
   }
 
@@ -38,7 +35,6 @@ export class UserService {
   }
 
   async saveSymptom(disease: Disease): Promise<Disease> {
-    console.log(disease)
     return await this.diseaseRepository.save(disease);
   }
 
@@ -58,7 +54,7 @@ export class UserService {
 
   async loadAboutDocUnderPatient(doc: string):Promise<Disease> {
     return await this.userRepository.query(`
-    SELECT username, name, age,sex, bloodType, phone, symptom, createTime, updateDate, doctorUsername FROM DISEASE WHERE doctorUsername='${doc}'`);
+    SELECT username, name, age,sex, bloodType, phone, symptom, createTime, updateDate, doctorUsername FROM DISEASE WHERE doctorUsername='${doc}' AND response = ""`);
 
   }
 
@@ -66,6 +62,10 @@ export class UserService {
   async loaBbyName(username: string): Promise<Disease> {
     return await this.userRepository.query(`
     SELECT username, name, age,sex, bloodType, phone, symptom, createTime, updateDate, doctorUsername FROM DISEASE WHERE username='${username}'`);
+  }
+  
+  async saveResponse(user): Promise<void> {
+    await this.diseaseRepository.update({username: user.username}, {response: user.response});
   }
 
   async uploadAvatar(data): Promise<void> {
