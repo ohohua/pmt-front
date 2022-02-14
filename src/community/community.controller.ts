@@ -1,4 +1,4 @@
-import { Controller, Post, Body, UseGuards, Get, Req, Query } from '@nestjs/common';
+import { Controller, Post, Body, UseGuards, Get, Req, Query, Put } from '@nestjs/common';
 import { CommunityService } from './community.service';
 // import { Community } from './community.entity';
 import { ApiBearerAuth, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
@@ -17,6 +17,8 @@ export class CommunityController {
     const data = {
       userId: req.user.id,
       content: dto.content,
+      nickname: dto.nickname,
+      avatar: dto.avatar,
       praiseQuantity: dto.praiseQuantity
     }
     console.log(data);
@@ -31,6 +33,8 @@ export class CommunityController {
     const data = {
       userId: req.user.id,
       content: dto.content,
+      nickname: dto.nickname,
+      avatar: dto.avatar,
       community: dto.community
     }
     console.log(data)
@@ -43,5 +47,13 @@ export class CommunityController {
   @Get()
   async loadCommunity(@Query() type) {
     return this.communityService.loadCommunity(type.type);
+  }
+
+  @ApiOperation({ summary: '更新点赞信息' })
+  @ApiBearerAuth() 
+  @UseGuards(AuthGuard('jwt'))
+  @Put()
+  async updateThump(@Body() dto) {
+    return this.communityService.updateThump(dto);    
   }
 }

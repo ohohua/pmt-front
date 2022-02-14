@@ -8,7 +8,7 @@ import {
 } from 'typeorm';
 import { SubComment } from './subComment.entity';
 
-@Entity('Community')
+@Entity('community')
 export class Community {
   @PrimaryGeneratedColumn()
   id: number;
@@ -18,6 +18,12 @@ export class Community {
 
   @Column({ length: 100, default: () => null })
   content: string; // 评论
+
+  @Column({ length: 100, default: () => null })
+  nickname: string; //昵称
+  
+  @Column({length: 100, default: () => null})
+  avatar: string; 
 
   @Column({ default: () => 0 })
   praiseQuantity: number; // 点赞数量

@@ -6,5 +6,5 @@
   "password": "123456", 
   "database": "pmt", 
   "entities": ["dist/**/*.entity{.ts,.js}"], 
-  "synchronize": true  
+  "synchronize": false
 }

@@ -3,7 +3,7 @@ import { Column, Entity, PrimaryGeneratedColumn, ManyToOne } from 'typeorm';
 import { Community } from './community.entity';
 
 // 子评论表
-@Entity('SubComment')
+@Entity('subComment')
 export class SubComment {
   @PrimaryGeneratedColumn('uuid')
   id: number;
@@ -14,6 +14,12 @@ export class SubComment {
   @Column({ length: 100, default: () => null })
   content: string; // 评论
 
-  @ManyToOne(() => Community, (community) => community.subComments)
+  @Column({ length: 100, default: () => null })
+  nickname: string; //昵称
+  
+  @Column({length: 100, default: () => null})
+  avatar: string; 
+  
+  @ManyToOne(() => Community, community => community.subComments)
   community: Community;
 }

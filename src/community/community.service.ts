@@ -4,7 +4,6 @@ import { Connection, Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
 import { User } from 'src/login/login.entity';
 import { SubComment } from './subComment.entity';
-import { Console } from 'console';
 
 @Injectable()
 export class CommunityService {
@@ -28,10 +27,15 @@ export class CommunityService {
 
   async loadCommunity(type) {
     if (type === 'NEW') {
+      const sql = this.cRepository.createQueryBuilder('community')
+      .leftJoinAndSelect('community.subComments', 'subComment')
+      .orderBy('community.createTime', 'DESC')
+      console.log(sql);
+      
       return await this.cRepository
         .createQueryBuilder('community')
         .leftJoinAndSelect('community.subComments', 'subComment')
-        .orderBy('createTime', 'DESC')
+        .orderBy('community.createTime', 'DESC')
         .getMany();
     }
     if(type === 'HOT') {
@@ -41,5 +45,9 @@ export class CommunityService {
       .orderBy('praiseQuantity', 'DESC')
       .getMany();
     }
+  }
+
+  async updateThump(dto) {
+    return await this.cRepository.update({userId: dto.userId},{praiseQuantity: dto.praiseQuantity});
   }
 }

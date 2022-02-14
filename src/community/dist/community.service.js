@@ -81,14 +81,19 @@ var CommunityService = /** @class */ (function () {
     };
     CommunityService.prototype.loadCommunity = function (type) {
         return __awaiter(this, void 0, void 0, function () {
+            var sql;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
                         if (!(type === 'NEW')) return [3 /*break*/, 2];
+                        sql = this.cRepository.createQueryBuilder('community')
+                            .leftJoinAndSelect('community.subComments', 'subComment')
+                            .orderBy('community.createTime', 'DESC');
+                        console.log(sql);
                         return [4 /*yield*/, this.cRepository
                                 .createQueryBuilder('community')
                                 .leftJoinAndSelect('community.subComments', 'subComment')
-                                .orderBy('createTime', 'DESC')
+                                .orderBy('community.createTime', 'DESC')
                                 .getMany()];
                     case 1: return [2 /*return*/, _a.sent()];
                     case 2:
@@ -100,6 +105,16 @@ var CommunityService = /** @class */ (function () {
                                 .getMany()];
                     case 3: return [2 /*return*/, _a.sent()];
                     case 4: return [2 /*return*/];
+                }
+            });
+        });
+    };
+    CommunityService.prototype.updateThump = function (dto) {
+        return __awaiter(this, void 0, void 0, function () {
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0: return [4 /*yield*/, this.cRepository.update({ userId: dto.userId }, { praiseQuantity: dto.praiseQuantity })];
+                    case 1: return [2 /*return*/, _a.sent()];
                 }
             });
         });

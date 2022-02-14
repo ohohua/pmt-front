@@ -22,6 +22,12 @@ var Community = /** @class */ (function () {
         typeorm_1.Column({ length: 100, "default": function () { return null; } })
     ], Community.prototype, "content");
     __decorate([
+        typeorm_1.Column({ length: 100, "default": function () { return null; } })
+    ], Community.prototype, "nickname");
+    __decorate([
+        typeorm_1.Column({ length: 100, "default": function () { return null; } })
+    ], Community.prototype, "avatar");
+    __decorate([
         typeorm_1.Column({ "default": function () { return 0; } })
     ], Community.prototype, "praiseQuantity");
     __decorate([
@@ -34,7 +40,7 @@ var Community = /** @class */ (function () {
         typeorm_1.OneToMany(function () { return subComment_entity_1.SubComment; }, function (subComment) { return subComment.community; })
     ], Community.prototype, "subComments");
     Community = __decorate([
-        typeorm_1.Entity('Community')
+        typeorm_1.Entity('community')
     ], Community);
     return Community;
 }());

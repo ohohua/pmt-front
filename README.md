@@ -78,3 +78,7 @@ Nest is [MIT licensed](LICENSE).
   - 前端用该技术对密码加密传输， 然后这边用约定好的秘钥和偏移量进行解密
 - bcrypt
   - 用该加密方式对传入数据库的密码进行加密，该过程不可逆
+
+## synchronize: boolean
+- true 链接数据库时自动创建表
+- false 连接数据库时不自动创建表

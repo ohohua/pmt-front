@@ -23,10 +23,16 @@ var SubComment = /** @class */ (function () {
         typeorm_1.Column({ length: 100, "default": function () { return null; } })
     ], SubComment.prototype, "content");
     __decorate([
+        typeorm_1.Column({ length: 100, "default": function () { return null; } })
+    ], SubComment.prototype, "nickname");
+    __decorate([
+        typeorm_1.Column({ length: 100, "default": function () { return null; } })
+    ], SubComment.prototype, "avatar");
+    __decorate([
         typeorm_1.ManyToOne(function () { return community_entity_1.Community; }, function (community) { return community.subComments; })
     ], SubComment.prototype, "community");
     SubComment = __decorate([
-        typeorm_1.Entity('SubComment')
+        typeorm_1.Entity('subComment')
     ], SubComment);
     return SubComment;
 }());

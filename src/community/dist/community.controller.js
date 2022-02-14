@@ -61,6 +61,8 @@ var CommunityController = /** @class */ (function () {
                 data = {
                     userId: req.user.id,
                     content: dto.content,
+                    nickname: dto.nickname,
+                    avatar: dto.avatar,
                     praiseQuantity: dto.praiseQuantity
                 };
                 console.log(data);
@@ -75,6 +77,8 @@ var CommunityController = /** @class */ (function () {
                 data = {
                     userId: req.user.id,
                     content: dto.content,
+                    nickname: dto.nickname,
+                    avatar: dto.avatar,
                     community: dto.community
                 };
                 console.log(data);
@@ -86,6 +90,13 @@ var CommunityController = /** @class */ (function () {
         return __awaiter(this, void 0, void 0, function () {
             return __generator(this, function (_a) {
                 return [2 /*return*/, this.communityService.loadCommunity(type.type)];
+            });
+        });
+    };
+    CommunityController.prototype.updateThump = function (dto) {
+        return __awaiter(this, void 0, void 0, function () {
+            return __generator(this, function (_a) {
+                return [2 /*return*/, this.communityService.updateThump(dto)];
             });
         });
     };
@@ -110,6 +121,13 @@ var CommunityController = /** @class */ (function () {
         common_1.Get(),
         __param(0, common_1.Query())
     ], CommunityController.prototype, "loadCommunity");
+    __decorate([
+        swagger_1.ApiOperation({ summary: '更新点赞信息' }),
+        swagger_1.ApiBearerAuth(),
+        common_1.UseGuards(passport_1.AuthGuard('jwt')),
+        common_1.Put(),
+        __param(0, common_1.Body())
+    ], CommunityController.prototype, "updateThump");
     CommunityController = __decorate([
         swagger_1.ApiTags('评论'),
         common_1.Controller('community')
