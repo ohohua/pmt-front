@@ -48,6 +48,6 @@ export class CommunityService {
   }
 
   async updateThump(dto) {
-    return await this.cRepository.update({userId: dto.userId},{praiseQuantity: dto.praiseQuantity});
+    return await this.cRepository.update({id: dto.id},{praiseQuantity: dto.praiseQuantity});
   }
 }

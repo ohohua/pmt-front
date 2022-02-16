@@ -20,7 +20,7 @@ var SubComment = /** @class */ (function () {
         typeorm_1.Column({ length: 100 })
     ], SubComment.prototype, "userId");
     __decorate([
-        typeorm_1.Column({ length: 100, "default": function () { return null; } })
+        typeorm_1.Column('text', { "default": function () { return null; } })
     ], SubComment.prototype, "content");
     __decorate([
         typeorm_1.Column({ length: 100, "default": function () { return null; } })

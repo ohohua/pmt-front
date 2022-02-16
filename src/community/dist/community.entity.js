@@ -19,7 +19,7 @@ var Community = /** @class */ (function () {
         typeorm_1.Column({ length: 100 })
     ], Community.prototype, "userId");
     __decorate([
-        typeorm_1.Column({ length: 100, "default": function () { return null; } })
+        typeorm_1.Column('text', { "default": function () { return null; } })
     ], Community.prototype, "content");
     __decorate([
         typeorm_1.Column({ length: 100, "default": function () { return null; } })

@@ -11,7 +11,7 @@ export class SubComment {
   @Column({ length: 100 })
   userId: string; // 用户id
 
-  @Column({ length: 100, default: () => null })
+  @Column('text' ,{ default: () => null })
   content: string; // 评论
 
   @Column({ length: 100, default: () => null })
