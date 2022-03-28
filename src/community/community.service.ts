@@ -30,7 +30,6 @@ export class CommunityService {
       const sql = this.cRepository.createQueryBuilder('community')
       .leftJoinAndSelect('community.subComments', 'subComment')
       .orderBy('community.createTime', 'DESC')
-      console.log(sql);
       
       return await this.cRepository
         .createQueryBuilder('community')

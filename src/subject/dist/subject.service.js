@@ -45,86 +45,28 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 exports.__esModule = true;
-exports.CommunityService = void 0;
+exports.SubjectService = void 0;
 var common_1 = require("@nestjs/common");
-var community_entity_1 = require("./community.entity");
+var subject_entity_1 = require("./subject.entity");
 var typeorm_1 = require("@nestjs/typeorm");
 var login_entity_1 = require("src/login/login.entity");
-var subComment_entity_1 = require("./subComment.entity");
-var CommunityService = /** @class */ (function () {
-    function CommunityService(userRepository, cRepository, subRepository) {
+var SubjectService = /** @class */ (function () {
+    function SubjectService(userRepository, subjectRepository) {
         this.userRepository = userRepository;
-        this.cRepository = cRepository;
-        this.subRepository = subRepository;
+        this.subjectRepository = subjectRepository;
     }
-    CommunityService.prototype.createCommunity = function (data) {
+    SubjectService.prototype.allSubject = function () {
         return __awaiter(this, void 0, void 0, function () {
             return __generator(this, function (_a) {
-                switch (_a.label) {
-                    case 0: return [4 /*yield*/, this.cRepository.save(data)];
-                    case 1: return [2 /*return*/, _a.sent()];
-                }
+                return [2 /*return*/, this.subjectRepository.find()];
             });
         });
     };
-    CommunityService.prototype.createSub = function (data) {
-        return __awaiter(this, void 0, void 0, function () {
-            return __generator(this, function (_a) {
-                switch (_a.label) {
-                    case 0: return [4 /*yield*/, this.subRepository.save(data)];
-                    case 1: 
-                    // return await this.subRepository.query(`INSERT INTO subcomment values(${data.content, data.userId, data.community})`);
-                    return [2 /*return*/, _a.sent()];
-                }
-            });
-        });
-    };
-    CommunityService.prototype.loadCommunity = function (type) {
-        return __awaiter(this, void 0, void 0, function () {
-            var sql;
-            return __generator(this, function (_a) {
-                switch (_a.label) {
-                    case 0:
-                        if (!(type === 'NEW')) return [3 /*break*/, 2];
-                        sql = this.cRepository.createQueryBuilder('community')
-                            .leftJoinAndSelect('community.subComments', 'subComment')
-                            .orderBy('community.createTime', 'DESC');
-                        console.log(sql);
-                        return [4 /*yield*/, this.cRepository
-                                .createQueryBuilder('community')
-                                .leftJoinAndSelect('community.subComments', 'subComment')
-                                .orderBy('community.createTime', 'DESC')
-                                .getMany()];
-                    case 1: return [2 /*return*/, _a.sent()];
-                    case 2:
-                        if (!(type === 'HOT')) return [3 /*break*/, 4];
-                        return [4 /*yield*/, this.cRepository
-                                .createQueryBuilder('community')
-                                .leftJoinAndSelect('community.subComments', 'subComment')
-                                .orderBy('praiseQuantity', 'DESC')
-                                .getMany()];
-                    case 3: return [2 /*return*/, _a.sent()];
-                    case 4: return [2 /*return*/];
-                }
-            });
-        });
-    };
-    CommunityService.prototype.updateThump = function (dto) {
-        return __awaiter(this, void 0, void 0, function () {
-            return __generator(this, function (_a) {
-                switch (_a.label) {
-                    case 0: return [4 /*yield*/, this.cRepository.update({ id: dto.id }, { praiseQuantity: dto.praiseQuantity })];
-                    case 1: return [2 /*return*/, _a.sent()];
-                }
-            });
-        });
-    };
-    CommunityService = __decorate([
+    SubjectService = __decorate([
         common_1.Injectable(),
         __param(0, typeorm_1.InjectRepository(login_entity_1.User)),
-        __param(1, typeorm_1.InjectRepository(community_entity_1.Community)),
-        __param(2, typeorm_1.InjectRepository(subComment_entity_1.SubComment))
-    ], CommunityService);
-    return CommunityService;
+        __param(1, typeorm_1.InjectRepository(subject_entity_1.Subject))
+    ], SubjectService);
+    return SubjectService;
 }());
-exports.CommunityService = CommunityService;
+exports.SubjectService = SubjectService;
