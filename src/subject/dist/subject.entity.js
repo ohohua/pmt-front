@@ -30,6 +30,9 @@ var Subject = /** @class */ (function () {
         typeorm_1.Column('text', { "default": function () { return null; } })
     ], Subject.prototype, "D");
     __decorate([
+        typeorm_1.Column('text', { "default": function () { return null; } })
+    ], Subject.prototype, "res");
+    __decorate([
         typeorm_1.Column('simple-enum', { "enum": ['A', 'B', 'C', 'D'], select: false })
     ], Subject.prototype, "ans");
     __decorate([

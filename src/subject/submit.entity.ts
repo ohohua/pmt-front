@@ -13,17 +13,13 @@ export class Submit {
   id: number;
 
   // 用户id
-  @Column({ length: 100 })
-  title: string;
-
-  // 题目
-  @Column('text', { default: () => null })
+  @Column({ default: () => '' })
   userId: string;
 
-  // 用户提交的答案
-  @Column('simple-enum', { enum: ['A', 'B', 'C', 'D'] })
-  ansFromUser: string;
-
+  // 分数
+  @Column({ default: () => 0 })
+  grade: number;
+ 
   @CreateDateColumn({})
   createTime: Date;
 

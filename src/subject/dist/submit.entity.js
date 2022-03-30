@@ -16,14 +16,11 @@ var Submit = /** @class */ (function () {
         typeorm_1.PrimaryGeneratedColumn()
     ], Submit.prototype, "id");
     __decorate([
-        typeorm_1.Column({ length: 100 })
-    ], Submit.prototype, "title");
-    __decorate([
-        typeorm_1.Column('text', { "default": function () { return null; } })
+        typeorm_1.Column({ "default": function () { return ''; } })
     ], Submit.prototype, "userId");
     __decorate([
-        typeorm_1.Column('simple-enum', { "enum": ['A', 'B', 'C', 'D'] })
-    ], Submit.prototype, "ansFromUser");
+        typeorm_1.Column({ "default": function () { return 0; } })
+    ], Submit.prototype, "grade");
     __decorate([
         typeorm_1.CreateDateColumn({})
     ], Submit.prototype, "createTime");

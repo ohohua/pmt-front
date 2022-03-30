@@ -21,7 +21,6 @@ export class CommunityController {
       avatar: dto.avatar,
       praiseQuantity: dto.praiseQuantity
     }
-    console.log(data);
     return this.communityService.createCommunity(data);
   }
 
@@ -37,7 +36,6 @@ export class CommunityController {
       avatar: dto.avatar,
       community: dto.community
     }
-    console.log(data)
     return this.communityService.createSub(data);
   }
 

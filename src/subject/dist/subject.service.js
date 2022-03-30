@@ -48,12 +48,12 @@ exports.__esModule = true;
 exports.SubjectService = void 0;
 var common_1 = require("@nestjs/common");
 var subject_entity_1 = require("./subject.entity");
+var submit_entity_1 = require("./submit.entity");
 var typeorm_1 = require("@nestjs/typeorm");
-var login_entity_1 = require("src/login/login.entity");
 var SubjectService = /** @class */ (function () {
-    function SubjectService(userRepository, subjectRepository) {
-        this.userRepository = userRepository;
+    function SubjectService(subjectRepository, submitRepository) {
         this.subjectRepository = subjectRepository;
+        this.submitRepository = submitRepository;
     }
     SubjectService.prototype.allSubject = function () {
         return __awaiter(this, void 0, void 0, function () {
@@ -62,10 +62,74 @@ var SubjectService = /** @class */ (function () {
             });
         });
     };
+    SubjectService.prototype.computedGrade = function (userId, answer) {
+        return __awaiter(this, void 0, void 0, function () {
+            var _this = this;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0: return [4 /*yield*/, this.subjectRepository
+                            .query("select * from subject")
+                            .then(function (res) {
+                            var gradeArr = [];
+                            var _loop_1 = function (a) {
+                                var temp = res.find(function (r) {
+                                    return a.titleId == r.id && a.ansFromUser == r.ans;
+                                });
+                                if (temp) {
+                                    gradeArr.push(temp);
+                                }
+                            };
+                            for (var _i = 0, answer_1 = answer; _i < answer_1.length; _i++) {
+                                var a = answer_1[_i];
+                                _loop_1(a);
+                            }
+                            var lastGrade = Math.floor(gradeArr.length / res.length);
+                            // 将成绩保存到submit表
+                            _this.submitRepository
+                                .find({ where: { userId: userId } })
+                                .then(function (result) {
+                                if (!result.length) {
+                                    // 没找到，说明没有，新建
+                                    var data = _this.submitRepository.create({
+                                        userId: userId,
+                                        grade: gradeArr.length
+                                    });
+                                    _this.submitRepository.save(data);
+                                }
+                                else {
+                                    // 找到了，更新
+                                    _this.submitRepository.update({ userId: userId }, { grade: gradeArr.length });
+                                }
+                            });
+                            switch (Math.floor(lastGrade * 10)) {
+                                case 10:
+                                case 9:
+                                    return '心理素质极佳'; // 一个题一分
+                                case 8:
+                                case 7:
+                                case 6:
+                                    return '心理素质良好';
+                                case 5:
+                                case 4:
+                                case 3:
+                                case 2:
+                                case 1:
+                                case 0:
+                                    return '心理素质较差';
+                            }
+                        })];
+                    case 1: 
+                    // 1.先根据ans的题目id找到题目，对比答案，正确分数+1
+                    // 2.根据useId找submit表有没有。 有更新成绩， 没有插入成绩
+                    return [2 /*return*/, _a.sent()];
+                }
+            });
+        });
+    };
     SubjectService = __decorate([
         common_1.Injectable(),
-        __param(0, typeorm_1.InjectRepository(login_entity_1.User)),
-        __param(1, typeorm_1.InjectRepository(subject_entity_1.Subject))
+        __param(0, typeorm_1.InjectRepository(subject_entity_1.Subject)),
+        __param(1, typeorm_1.InjectRepository(submit_entity_1.Submit))
     ], SubjectService);
     return SubjectService;
 }());

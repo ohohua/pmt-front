@@ -45,62 +45,91 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 exports.__esModule = true;
-exports.SubjectController = void 0;
+exports.CommunityController = void 0;
 var common_1 = require("@nestjs/common");
-var passport_1 = require("@nestjs/passport");
+// import { Community } from './community.entity';
 var swagger_1 = require("@nestjs/swagger");
-var SubjectController = /** @class */ (function () {
-    function SubjectController(subjectService) {
-        this.subjectService = subjectService;
+var passport_1 = require("@nestjs/passport");
+var CommunityController = /** @class */ (function () {
+    function CommunityController(communityService) {
+        this.communityService = communityService;
     }
-    SubjectController.prototype.updateThump = function (dto) {
+    CommunityController.prototype.createCommunity = function (dto, req) {
         return __awaiter(this, void 0, void 0, function () {
+            var data;
             return __generator(this, function (_a) {
-                return [2 /*return*/, this.subjectService.allSubject()];
+                data = {
+                    userId: req.user.id,
+                    content: dto.content,
+                    nickname: dto.nickname,
+                    avatar: dto.avatar,
+                    praiseQuantity: dto.praiseQuantity
+                };
+                return [2 /*return*/, this.communityService.createCommunity(data)];
             });
         });
     };
-    SubjectController.prototype.submitAns = function (req, ans) {
+    CommunityController.prototype.createSub = function (dto, req) {
+        return __awaiter(this, void 0, void 0, function () {
+            var data;
+            return __generator(this, function (_a) {
+                data = {
+                    userId: req.user.id,
+                    content: dto.content,
+                    nickname: dto.nickname,
+                    avatar: dto.avatar,
+                    community: dto.community
+                };
+                return [2 /*return*/, this.communityService.createSub(data)];
+            });
+        });
+    };
+    CommunityController.prototype.loadCommunity = function (type) {
         return __awaiter(this, void 0, void 0, function () {
             return __generator(this, function (_a) {
-                // req { user }
-                /*
-                  user: {
-                      id: 'e068d36e-cc4c-4290-8e53-54f542e3f72d',
-                      username: 'lirui',
-                      role: 'patient',
-                      iat: 1648656877
-                      }
-                */
-                // ans
-                /*
-                [
-                  { titleId: '1', ansFromUser: 'A' },
-                  { titleId: '2', ansFromUser: 'C' }
-                ]
-                */
-                return [2 /*return*/, this.subjectService.computedGrade(req.user.id, ans)];
+                return [2 /*return*/, this.communityService.loadCommunity(type.type)];
+            });
+        });
+    };
+    CommunityController.prototype.updateThump = function (dto) {
+        return __awaiter(this, void 0, void 0, function () {
+            return __generator(this, function (_a) {
+                return [2 /*return*/, this.communityService.updateThump(dto)];
             });
         });
     };
     __decorate([
-        swagger_1.ApiOperation({ summary: '获取题目' }),
+        swagger_1.ApiOperation({ summary: '保存评论信息' }),
+        swagger_1.ApiBearerAuth(),
+        common_1.UseGuards(passport_1.AuthGuard('jwt')),
+        common_1.Post('save'),
+        __param(0, common_1.Body()), __param(1, common_1.Req())
+    ], CommunityController.prototype, "createCommunity");
+    __decorate([
+        swagger_1.ApiOperation({ summary: '保存子评论' }),
+        swagger_1.ApiBearerAuth(),
+        common_1.UseGuards(passport_1.AuthGuard('jwt')),
+        common_1.Post('subSave'),
+        __param(0, common_1.Body()), __param(1, common_1.Req())
+    ], CommunityController.prototype, "createSub");
+    __decorate([
+        swagger_1.ApiOperation({ summary: '按照最新 | 最热加载评论信息' }),
         swagger_1.ApiBearerAuth(),
         common_1.UseGuards(passport_1.AuthGuard('jwt')),
         common_1.Get(),
-        __param(0, common_1.Body())
-    ], SubjectController.prototype, "updateThump");
+        __param(0, common_1.Query())
+    ], CommunityController.prototype, "loadCommunity");
     __decorate([
-        swagger_1.ApiOperation({ summary: '提交答案' }),
+        swagger_1.ApiOperation({ summary: '更新点赞信息' }),
         swagger_1.ApiBearerAuth(),
         common_1.UseGuards(passport_1.AuthGuard('jwt')),
-        common_1.Post(),
-        __param(0, common_1.Req()), __param(1, common_1.Body())
-    ], SubjectController.prototype, "submitAns");
-    SubjectController = __decorate([
-        swagger_1.ApiTags('题目'),
-        common_1.Controller('subject')
-    ], SubjectController);
-    return SubjectController;
+        common_1.Put(),
+        __param(0, common_1.Body())
+    ], CommunityController.prototype, "updateThump");
+    CommunityController = __decorate([
+        swagger_1.ApiTags('评论'),
+        common_1.Controller('community')
+    ], CommunityController);
+    return CommunityController;
 }());
-exports.SubjectController = SubjectController;
+exports.CommunityController = CommunityController;
