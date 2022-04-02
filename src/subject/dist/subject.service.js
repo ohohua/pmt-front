@@ -126,6 +126,16 @@ var SubjectService = /** @class */ (function () {
             });
         });
     };
+    SubjectService.prototype.loadGrade = function (userId) {
+        return __awaiter(this, void 0, void 0, function () {
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0: return [4 /*yield*/, this.submitRepository.find({ where: { userId: userId } })];
+                    case 1: return [2 /*return*/, _a.sent()];
+                }
+            });
+        });
+    };
     SubjectService = __decorate([
         common_1.Injectable(),
         __param(0, typeorm_1.InjectRepository(subject_entity_1.Subject)),

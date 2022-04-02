@@ -19,7 +19,7 @@ export class Submit {
   // 分数
   @Column({ default: () => 0 })
   grade: number;
- 
+
   @CreateDateColumn({})
   createTime: Date;
 

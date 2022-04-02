@@ -53,6 +53,14 @@ var SubjectController = /** @class */ (function () {
     function SubjectController(subjectService) {
         this.subjectService = subjectService;
     }
+    SubjectController.prototype.loadGrade = function (req) {
+        return __awaiter(this, void 0, void 0, function () {
+            return __generator(this, function (_a) {
+                console.log(req.user);
+                return [2 /*return*/, this.subjectService.loadGrade(req.user.id)];
+            });
+        });
+    };
     SubjectController.prototype.updateThump = function (dto) {
         return __awaiter(this, void 0, void 0, function () {
             return __generator(this, function (_a) {
@@ -83,6 +91,13 @@ var SubjectController = /** @class */ (function () {
             });
         });
     };
+    __decorate([
+        swagger_1.ApiOperation({ summary: '获取心理测试成绩' }),
+        swagger_1.ApiBearerAuth(),
+        common_1.UseGuards(passport_1.AuthGuard('jwt')),
+        common_1.Get('loadGrade'),
+        __param(0, common_1.Req())
+    ], SubjectController.prototype, "loadGrade");
     __decorate([
         swagger_1.ApiOperation({ summary: '获取题目' }),
         swagger_1.ApiBearerAuth(),

@@ -8,6 +8,16 @@ import { ApiOperation, ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 export class SubjectController {
   constructor(private readonly subjectService: SubjectService) {}
 
+  @ApiOperation({ summary: '获取心理测试成绩' })
+  @ApiBearerAuth()
+  @UseGuards(AuthGuard('jwt'))
+  @Get('loadGrade')
+  async loadGrade(@Req() req) {
+    console.log(req.user);
+    
+    return this.subjectService.loadGrade(req.user.id);
+  }
+  
   @ApiOperation({ summary: '获取题目' })
   @ApiBearerAuth()
   @UseGuards(AuthGuard('jwt'))
@@ -39,4 +49,6 @@ export class SubjectController {
     */
    return this.subjectService.computedGrade(req.user.id, ans);
   }
+
+
 }

@@ -3,8 +3,6 @@ import { Subject } from './subject.entity';
 import { Submit } from './submit.entity';
 import { Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
-import { User } from 'src/login/login.entity';
-import { last } from 'rxjs';
 
 @Injectable()
 export class SubjectService {
@@ -73,5 +71,9 @@ export class SubjectService {
             return '心理素质较差';
         }
       });
+  }
+
+  async loadGrade(userId) {
+    return await this.submitRepository.find({where: {userId: userId}});
   }
 }
