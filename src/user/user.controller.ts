@@ -85,8 +85,8 @@ export class UserController {
   }
   /**
    * 获取病例信息
-   * @param param0 
-   * @returns 
+   * @param param0
+   * @returns
    */
   @ApiOperation({ summary: '通过病人username获取病例信息' })
   @UseGuards(AuthGuard('jwt'))
@@ -132,8 +132,8 @@ export class UserController {
     const { path } = file;
     const data = {
       id: req.user.id,
-      avatar: `http://localhost:9088/user/${path.split('\\')[2]}`
-    }
+      avatar: `http://localhost:9088/user/${path.split('\\')[2]}`,
+    };
     return this.userService.uploadAvatar(data);
   }
 
@@ -148,8 +148,25 @@ export class UserController {
     const data = {
       id: req.user.id,
       username: user.username,
-      nickname: user.nickname
-    }
+      nickname: user.nickname,
+    };
     return this.userService.uploadUser(data);
+  }
+
+  /**
+   * 获取所有用户 | 根据参数获取特定用户
+   * @param param0 用户名
+   * @param req token分析
+   * @returns promise
+   */
+  @ApiOperation({ summary: '获取所有用户 | 根据参数获取特定用户' })
+  @UseGuards(AuthGuard('jwt'))
+  @Get('loadAllUser')
+  async loadAllUser(@Query() { username }, @Req() req) {
+    
+    if (req.user.role !== 'root') {
+      return '没有权限！';
+    }
+    return this.userService.loadAllUser(username);
   }
 }

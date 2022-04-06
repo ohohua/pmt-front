@@ -21,10 +21,10 @@ export class UserService {
   }
 
   async getParticularUser(user): Promise<User> {
-    if(!user.sort) {
+    if (!user.sort) {
       user.sort = 'updateTime';
     }
-    if(user.isNew) {
+    if (user.isNew) {
       return await this.userRepository.query(
         `SELECT id,username,role,nickname,avatar,createTime,updateTime, praiseQuantity, answerNumber, isNew FROM USER WHERE role='${user.role}' AND isNew=1 ORDER BY ${user.sort} DESC`,
       );
@@ -39,41 +39,59 @@ export class UserService {
   }
 
   async updateMessage(user: User) {
-    if(!user.praiseQuantity && !user.answerNumber) {
+    if (!user.praiseQuantity && !user.answerNumber) {
       return '必要参数未传递';
     }
-    if(user.praiseQuantity) {
-      await this.userRepository.update({username: user.username}, {praiseQuantity: user.praiseQuantity});
-    } else if(user.answerNumber) {
-      await this.userRepository.update({username: user.username}, {answerNumber: user.answerNumber});
+    if (user.praiseQuantity) {
+      await this.userRepository.update(
+        { username: user.username },
+        { praiseQuantity: user.praiseQuantity },
+      );
+    } else if (user.answerNumber) {
+      await this.userRepository.update(
+        { username: user.username },
+        { answerNumber: user.answerNumber },
+      );
     }
-    
-    
+
     return '更新成功';
   }
 
-  async loadAboutDocUnderPatient(doc: string):Promise<Disease> {
+  async loadAboutDocUnderPatient(doc: string): Promise<Disease> {
     return await this.userRepository.query(`
     SELECT username, name, age,sex, bloodType, phone, symptom, createTime, updateDate, doctorUsername FROM DISEASE WHERE doctorUsername='${doc}' AND response = ""`);
-
   }
-
 
   async loaBbyName(username: string): Promise<Disease> {
     return await this.userRepository.query(`
     SELECT username, name, age,sex, bloodType, phone, symptom, createTime, updateDate, doctorUsername FROM DISEASE WHERE username='${username}'`);
   }
-  
+
   async saveResponse(user): Promise<void> {
-    await this.diseaseRepository.update({username: user.username}, {response: user.response});
+    await this.diseaseRepository.update(
+      { username: user.username },
+      { response: user.response },
+    );
   }
 
   async uploadAvatar(data): Promise<void> {
-     await this.userRepository.update({id: data.id},{avatar: data.avatar});
+    await this.userRepository.update({ id: data.id }, { avatar: data.avatar });
   }
 
-  async uploadUser(data):Promise<string> {
-    await this.userRepository.update({id: data.id}, {username: data.username, nickname: data.nickname})
-    return '修改成功！'
+  async uploadUser(data): Promise<string> {
+    await this.userRepository.update(
+      { id: data.id },
+      { username: data.username, nickname: data.nickname },
+    );
+    return '修改成功！';
+  }
+
+  async loadAllUser(username) {
+    if (username) {
+      return await this.userRepository.find({
+        where: { username: `${username}` },
+      });
+    }
+    return await this.userRepository.find();
   }
 }
