@@ -163,10 +163,42 @@ export class UserController {
   @UseGuards(AuthGuard('jwt'))
   @Get('loadAllUser')
   async loadAllUser(@Query() { username }, @Req() req) {
-    
     if (req.user.role !== 'root') {
       return '没有权限！';
     }
     return this.userService.loadAllUser(username);
+  }
+
+  /**
+   * 增加用户 | 更改用户
+   * @param param0 用户信息
+   * @param req token分析
+   * @returns promise
+   */
+  @ApiOperation({ summary: '添加用户' })
+  @UseGuards(AuthGuard('jwt'))
+  @Post('addUser')
+  async addUser(@Body() user, @Req() req) {
+    if (req.user.role !== 'root') {
+      return '没有权限！';
+    }
+    return this.userService.addUser(user);
+  }
+
+  /**
+   * 删除用户，根据username
+   * @param user  Array
+   * @param req 
+   * @returns promise
+   */
+  @ApiOperation({ summary: '删除用户' })
+  @UseGuards(AuthGuard('jwt'))
+  @Post('del')
+  async userDel(@Body() user, @Req() req) {
+    
+    if (req.user.role !== 'root') {
+      return '没有权限！';
+    }
+    return this.userService.userDel(user);
   }
 }

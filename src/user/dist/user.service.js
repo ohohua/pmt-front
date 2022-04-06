@@ -1,4 +1,15 @@
 "use strict";
+var __assign = (this && this.__assign) || function () {
+    __assign = Object.assign || function(t) {
+        for (var s, i = 1, n = arguments.length; i < n; i++) {
+            s = arguments[i];
+            for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p))
+                t[p] = s[p];
+        }
+        return t;
+    };
+    return __assign.apply(this, arguments);
+};
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -190,6 +201,39 @@ var UserService = /** @class */ (function () {
                     case 2: return [4 /*yield*/, this.userRepository.find()];
                     case 3: return [2 /*return*/, _a.sent()];
                 }
+            });
+        });
+    };
+    UserService.prototype.addUser = function (user) {
+        return __awaiter(this, void 0, void 0, function () {
+            var _this = this;
+            return __generator(this, function (_a) {
+                return [2 /*return*/, this.userRepository
+                        .find({ where: { username: "" + user.username } })
+                        .then(function (res) {
+                        if (res.length === 0) {
+                            return _this.userRepository.save(user);
+                        }
+                        else {
+                            _this.userRepository.update({ username: "" + user.username }, __assign({}, user));
+                            return '更改成功！';
+                        }
+                    })];
+            });
+        });
+    };
+    UserService.prototype.userDel = function (user) {
+        return __awaiter(this, void 0, void 0, function () {
+            var p, _i, user_1, i;
+            return __generator(this, function (_a) {
+                p = [];
+                for (_i = 0, user_1 = user; _i < user_1.length; _i++) {
+                    i = user_1[_i];
+                    p.push(this.userRepository["delete"]({ username: "" + i.username }));
+                }
+                return [2 /*return*/, Promise.all(p).then(function (res) {
+                        return '删除成功！';
+                    })];
             });
         });
     };

@@ -183,6 +183,38 @@ var UserController = /** @class */ (function () {
             });
         });
     };
+    /**
+     * 增加用户 | 更改用户
+     * @param param0 用户信息
+     * @param req token分析
+     * @returns promise
+     */
+    UserController.prototype.addUser = function (user, req) {
+        return __awaiter(this, void 0, void 0, function () {
+            return __generator(this, function (_a) {
+                if (req.user.role !== 'root') {
+                    return [2 /*return*/, '没有权限！'];
+                }
+                return [2 /*return*/, this.userService.addUser(user)];
+            });
+        });
+    };
+    /**
+     * 删除用户，根据username
+     * @param user  Array
+     * @param req
+     * @returns promise
+     */
+    UserController.prototype.userDel = function (user, req) {
+        return __awaiter(this, void 0, void 0, function () {
+            return __generator(this, function (_a) {
+                if (req.user.role !== 'root') {
+                    return [2 /*return*/, '没有权限！'];
+                }
+                return [2 /*return*/, this.userService.userDel(user)];
+            });
+        });
+    };
     __decorate([
         swagger_1.ApiOperation({ summary: '根据token解析某个用户信息' }),
         swagger_1.ApiBearerAuth() // swagger文档设置token
@@ -272,6 +304,18 @@ var UserController = /** @class */ (function () {
         common_1.Get('loadAllUser'),
         __param(0, common_1.Query()), __param(1, common_1.Req())
     ], UserController.prototype, "loadAllUser");
+    __decorate([
+        swagger_1.ApiOperation({ summary: '添加用户' }),
+        common_1.UseGuards(passport_1.AuthGuard('jwt')),
+        common_1.Post('addUser'),
+        __param(0, common_1.Body()), __param(1, common_1.Req())
+    ], UserController.prototype, "addUser");
+    __decorate([
+        swagger_1.ApiOperation({ summary: '删除用户' }),
+        common_1.UseGuards(passport_1.AuthGuard('jwt')),
+        common_1.Post('del'),
+        __param(0, common_1.Body()), __param(1, common_1.Req())
+    ], UserController.prototype, "userDel");
     UserController = __decorate([
         swagger_1.ApiTags('用户信息'),
         common_1.Controller('user')

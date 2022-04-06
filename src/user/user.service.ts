@@ -94,4 +94,30 @@ export class UserService {
     }
     return await this.userRepository.find();
   }
+
+  async addUser(user) {
+    return this.userRepository
+      .find({ where: { username: `${user.username}` } })
+      .then((res) => {
+        if (res.length === 0) {
+          return this.userRepository.save(user);
+        } else {
+          this.userRepository.update(
+            { username: `${user.username}` },
+            { ...user },
+          );
+          return '更改成功！';
+        }
+      });
+  }
+
+  async userDel(user) {
+    const p = [];
+    for (let i of user) {
+      p.push(this.userRepository.delete({ username: `${i.username}` }));
+    }
+    return Promise.all(p).then((res) => {
+      return '删除成功！'
+    })
+  }
 }
