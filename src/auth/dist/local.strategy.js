@@ -1,9 +1,25 @@
 "use strict";
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = function (d, b) {
+        extendStatics = Object.setPrototypeOf ||
+            ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+            function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+        return extendStatics(d, b);
+    };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
     else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
     return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __param = (this && this.__param) || function (paramIndex, decorator) {
+    return function (target, key) { decorator(target, key, paramIndex); }
 };
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
@@ -42,89 +58,55 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 exports.__esModule = true;
-exports.User = void 0;
-var typeorm_1 = require("typeorm");
-// import { Exclude } from 'class-transformer';
+exports.LocalStrategy = void 0;
+var passport_1 = require("@nestjs/passport");
+var passport_local_1 = require("passport-local");
+var login_entity_1 = require("../login/login.entity");
+var typeorm_1 = require("@nestjs/typeorm");
+var common_1 = require("@nestjs/common");
 var bcrypt = require("bcrypt");
-var User = /** @class */ (function () {
-    function User() {
+var jwt_contants_1 = require("./jwt.contants");
+var LocalStrategy = /** @class */ (function (_super) {
+    __extends(LocalStrategy, _super);
+    function LocalStrategy(userRepository) {
+        var _this = _super.call(this, {
+            usernameField: 'username',
+            passwordField: 'password'
+        }) || this;
+        _this.userRepository = userRepository;
+        return _this;
     }
-    User.prototype.encryptPwd = function () {
+    LocalStrategy.prototype.validate = function (username, password) {
         return __awaiter(this, void 0, void 0, function () {
-            var salt, _a;
-            return __generator(this, function (_b) {
-                switch (_b.label) {
-                    case 0: return [4 /*yield*/, bcrypt.genSalt()];
+            var user;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        // 对前端传来的密码先解密
+                        password = jwt_contants_1.decrypt('1234123412ABCDEF', '1234123412ABCDEF', password);
+                        return [4 /*yield*/, this.userRepository
+                                .createQueryBuilder('user')
+                                .addSelect('user.password')
+                                .where('user.username=:username', { username: username })
+                                .getOne()];
                     case 1:
-                        salt = _b.sent();
-                        _a = this;
-                        return [4 /*yield*/, bcrypt.hash(this.password, salt)];
+                        user = _a.sent();
+                        if (!user) {
+                            throw new common_1.UnauthorizedException('账号不正确！');
+                        }
+                        return [4 /*yield*/, bcrypt.compare(password, user.password)];
                     case 2:
-                        _a.password = _b.sent();
-                        return [2 /*return*/];
+                        if (!(_a.sent())) {
+                            throw new common_1.UnauthorizedException('密码错误！');
+                        }
+                        return [2 /*return*/, user];
                 }
             });
         });
     };
-    User.prototype.encryptPwd2 = function () {
-        return __awaiter(this, void 0, void 0, function () {
-            var salt, _a;
-            return __generator(this, function (_b) {
-                switch (_b.label) {
-                    case 0: return [4 /*yield*/, bcrypt.genSalt()];
-                    case 1:
-                        salt = _b.sent();
-                        _a = this;
-                        return [4 /*yield*/, bcrypt.hash(this.password, salt)];
-                    case 2:
-                        _a.password = _b.sent();
-                        return [2 /*return*/];
-                }
-            });
-        });
-    };
-    __decorate([
-        typeorm_1.PrimaryGeneratedColumn('uuid')
-    ], User.prototype, "id");
-    __decorate([
-        typeorm_1.Column({ length: 100 })
-    ], User.prototype, "username");
-    __decorate([
-        typeorm_1.Column({ length: 100, "default": function () { return null; } })
-    ], User.prototype, "nickname");
-    __decorate([
-        typeorm_1.Column({ length: 100, "default": function () { return null; } })
-    ], User.prototype, "avatar");
-    __decorate([
-        typeorm_1.Column('simple-enum', { "enum": ['root', 'doctor', 'patient'] })
-    ], User.prototype, "role");
-    __decorate([
-        typeorm_1.Column({ length: 100, select: false })
-    ], User.prototype, "password");
-    __decorate([
-        typeorm_1.Column({ "default": function () { return 0; } })
-    ], User.prototype, "praiseQuantity");
-    __decorate([
-        typeorm_1.Column({ "default": function () { return 0; } })
-    ], User.prototype, "answerNumber");
-    __decorate([
-        typeorm_1.Column({ "default": function () { return false; } })
-    ], User.prototype, "isNew");
-    __decorate([
-        typeorm_1.CreateDateColumn({})
-    ], User.prototype, "createTime");
-    __decorate([
-        typeorm_1.UpdateDateColumn({})
-    ], User.prototype, "updateTime");
-    __decorate([
-        typeorm_1.BeforeInsert()
-    ], User.prototype, "encryptPwd");
-    __decorate([
-        typeorm_1.BeforeUpdate()
-    ], User.prototype, "encryptPwd2");
-    User = __decorate([
-        typeorm_1.Entity('user')
-    ], User);
-    return User;
-}());
-exports.User = User;
+    LocalStrategy = __decorate([
+        __param(0, typeorm_1.InjectRepository(login_entity_1.User))
+    ], LocalStrategy);
+    return LocalStrategy;
+}(passport_1.PassportStrategy(passport_local_1.Strategy)));
+exports.LocalStrategy = LocalStrategy;

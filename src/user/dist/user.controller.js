@@ -184,7 +184,7 @@ var UserController = /** @class */ (function () {
         });
     };
     /**
-     * 增加用户 | 更改用户
+     * 增加用户
      * @param param0 用户信息
      * @param req token分析
      * @returns promise
@@ -196,6 +196,22 @@ var UserController = /** @class */ (function () {
                     return [2 /*return*/, '没有权限！'];
                 }
                 return [2 /*return*/, this.userService.addUser(user)];
+            });
+        });
+    };
+    /**
+   * 更改用户
+   * @param param0 用户信息
+   * @param req token分析
+   * @returns promise
+   */
+    UserController.prototype.updateUser = function (user, req) {
+        return __awaiter(this, void 0, void 0, function () {
+            return __generator(this, function (_a) {
+                if (req.user.role !== 'root') {
+                    return [2 /*return*/, '没有权限！'];
+                }
+                return [2 /*return*/, this.userService.updateUser(user)];
             });
         });
     };
@@ -310,6 +326,12 @@ var UserController = /** @class */ (function () {
         common_1.Post('addUser'),
         __param(0, common_1.Body()), __param(1, common_1.Req())
     ], UserController.prototype, "addUser");
+    __decorate([
+        swagger_1.ApiOperation({ summary: '添加用户' }),
+        common_1.UseGuards(passport_1.AuthGuard('jwt')),
+        common_1.Post('updateUser'),
+        __param(0, common_1.Body()), __param(1, common_1.Req())
+    ], UserController.prototype, "updateUser");
     __decorate([
         swagger_1.ApiOperation({ summary: '删除用户' }),
         common_1.UseGuards(passport_1.AuthGuard('jwt')),

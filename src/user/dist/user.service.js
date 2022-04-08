@@ -1,15 +1,4 @@
 "use strict";
-var __assign = (this && this.__assign) || function () {
-    __assign = Object.assign || function(t) {
-        for (var s, i = 1, n = arguments.length; i < n; i++) {
-            s = arguments[i];
-            for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p))
-                t[p] = s[p];
-        }
-        return t;
-    };
-    return __assign.apply(this, arguments);
-};
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -212,10 +201,37 @@ var UserService = /** @class */ (function () {
                         .find({ where: { username: "" + user.username } })
                         .then(function (res) {
                         if (res.length === 0) {
-                            return _this.userRepository.save(user);
+                            // 解决@BeforeInsert不会触发的问题
+                            var entity = Object.assign(new login_entity_1.User(), user);
+                            // 避免将password返回, 只有select设置了排除password字段
+                            _this.userRepository.save(entity).then(function () {
+                                return _this.userRepository.findOne({
+                                    where: { username: user.username }
+                                });
+                            });
                         }
                         else {
-                            _this.userRepository.update({ username: "" + user.username }, __assign({}, user));
+                            return '已存在！';
+                        }
+                    })];
+            });
+        });
+    };
+    UserService.prototype.updateUser = function (user) {
+        return __awaiter(this, void 0, void 0, function () {
+            var _this = this;
+            return __generator(this, function (_a) {
+                return [2 /*return*/, this.userRepository
+                        .find({ where: { username: "" + user.username } })
+                        .then(function (res) {
+                        if (res.length === 0) {
+                            return '没有该账户！';
+                        }
+                        else {
+                            delete user.key;
+                            delete user.password;
+                            var entity = Object.assign(new login_entity_1.User(), user);
+                            _this.userRepository.update({ username: "" + user.username }, user);
                             return '更改成功！';
                         }
                     })];

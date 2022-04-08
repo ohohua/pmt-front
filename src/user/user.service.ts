@@ -100,12 +100,30 @@ export class UserService {
       .find({ where: { username: `${user.username}` } })
       .then((res) => {
         if (res.length === 0) {
-          return this.userRepository.save(user);
+          // 解决@BeforeInsert不会触发的问题
+          const entity = Object.assign(new User(), user);
+          // 避免将password返回, 只有select设置了排除password字段
+          this.userRepository.save(entity).then(() => {
+            return this.userRepository.findOne({
+              where: { username: user.username },
+            });
+          });
         } else {
-          this.userRepository.update(
-            { username: `${user.username}` },
-            { ...user },
-          );
+          return '已存在！';
+        }
+      });
+  }
+  async updateUser(user) {
+    return this.userRepository
+      .find({ where: { username: `${user.username}` } })
+      .then((res) => {
+        if (res.length === 0) {
+          return '没有该账户！';
+        } else {
+          delete user.key;
+          delete user.password;
+          const entity = Object.assign(new User(), user);
+          this.userRepository.update({ username: `${user.username}` }, user);
           return '更改成功！';
         }
       });
@@ -117,7 +135,7 @@ export class UserService {
       p.push(this.userRepository.delete({ username: `${i.username}` }));
     }
     return Promise.all(p).then((res) => {
-      return '删除成功！'
-    })
+      return '删除成功！';
+    });
   }
 }

@@ -5,6 +5,7 @@ import {
   CreateDateColumn,
   UpdateDateColumn,
   BeforeInsert,
+  BeforeUpdate,
 } from 'typeorm';
 // import { Exclude } from 'class-transformer';
 import * as bcrypt from 'bcrypt';
@@ -19,9 +20,9 @@ export class User {
 
   @Column({ length: 100, default: () => null })
   nickname: string; //昵称
-  
-  @Column({length: 100, default: () => null})
-  avatar: string; 
+
+  @Column({ length: 100, default: () => null })
+  avatar: string;
 
   @Column('simple-enum', { enum: ['root', 'doctor', 'patient'] })
   role: string; // 用户角色
@@ -46,6 +47,13 @@ export class User {
 
   @BeforeInsert()
   async encryptPwd() {
+    // 加盐
+    const salt = await bcrypt.genSalt();
+    this.password = await bcrypt.hash(this.password, salt);
+  }
+
+  @BeforeUpdate()
+  async encryptPwd2() {
     // 加盐
     const salt = await bcrypt.genSalt();
     this.password = await bcrypt.hash(this.password, salt);

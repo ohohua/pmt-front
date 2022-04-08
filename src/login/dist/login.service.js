@@ -5,6 +5,9 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
     else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
+var __param = (this && this.__param) || function (paramIndex, decorator) {
+    return function (target, key) { decorator(target, key, paramIndex); }
+};
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -42,89 +45,46 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 exports.__esModule = true;
-exports.User = void 0;
-var typeorm_1 = require("typeorm");
-// import { Exclude } from 'class-transformer';
-var bcrypt = require("bcrypt");
-var User = /** @class */ (function () {
-    function User() {
+exports.LoginService = void 0;
+var common_1 = require("@nestjs/common");
+var login_entity_1 = require("./login.entity");
+var typeorm_1 = require("@nestjs/typeorm");
+var LoginService = /** @class */ (function () {
+    function LoginService(userRepository) {
+        this.userRepository = userRepository;
     }
-    User.prototype.encryptPwd = function () {
-        return __awaiter(this, void 0, void 0, function () {
-            var salt, _a;
-            return __generator(this, function (_b) {
-                switch (_b.label) {
-                    case 0: return [4 /*yield*/, bcrypt.genSalt()];
+    LoginService.prototype.register = function (user) {
+        return __awaiter(this, void 0, Promise, function () {
+            var username, password, doc, entity;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        username = user.username, password = user.password;
+                        if (!username || !password) {
+                            throw new common_1.HttpException('用户名或密码不能为空', 401);
+                        }
+                        return [4 /*yield*/, this.userRepository.findOne({ where: { username: username } })];
                     case 1:
-                        salt = _b.sent();
-                        _a = this;
-                        return [4 /*yield*/, bcrypt.hash(this.password, salt)];
+                        doc = _a.sent();
+                        if (doc) {
+                            throw new common_1.HttpException('账号已存在！', 401);
+                        }
+                        entity = Object.assign(new login_entity_1.User(), user);
+                        // 避免将password返回, 只有select设置了排除password字段
+                        return [4 /*yield*/, this.userRepository.save(entity)];
                     case 2:
-                        _a.password = _b.sent();
-                        return [2 /*return*/];
+                        // 避免将password返回, 只有select设置了排除password字段
+                        _a.sent();
+                        return [4 /*yield*/, this.userRepository.findOne({ where: { username: username } })];
+                    case 3: return [2 /*return*/, _a.sent()];
                 }
             });
         });
     };
-    User.prototype.encryptPwd2 = function () {
-        return __awaiter(this, void 0, void 0, function () {
-            var salt, _a;
-            return __generator(this, function (_b) {
-                switch (_b.label) {
-                    case 0: return [4 /*yield*/, bcrypt.genSalt()];
-                    case 1:
-                        salt = _b.sent();
-                        _a = this;
-                        return [4 /*yield*/, bcrypt.hash(this.password, salt)];
-                    case 2:
-                        _a.password = _b.sent();
-                        return [2 /*return*/];
-                }
-            });
-        });
-    };
-    __decorate([
-        typeorm_1.PrimaryGeneratedColumn('uuid')
-    ], User.prototype, "id");
-    __decorate([
-        typeorm_1.Column({ length: 100 })
-    ], User.prototype, "username");
-    __decorate([
-        typeorm_1.Column({ length: 100, "default": function () { return null; } })
-    ], User.prototype, "nickname");
-    __decorate([
-        typeorm_1.Column({ length: 100, "default": function () { return null; } })
-    ], User.prototype, "avatar");
-    __decorate([
-        typeorm_1.Column('simple-enum', { "enum": ['root', 'doctor', 'patient'] })
-    ], User.prototype, "role");
-    __decorate([
-        typeorm_1.Column({ length: 100, select: false })
-    ], User.prototype, "password");
-    __decorate([
-        typeorm_1.Column({ "default": function () { return 0; } })
-    ], User.prototype, "praiseQuantity");
-    __decorate([
-        typeorm_1.Column({ "default": function () { return 0; } })
-    ], User.prototype, "answerNumber");
-    __decorate([
-        typeorm_1.Column({ "default": function () { return false; } })
-    ], User.prototype, "isNew");
-    __decorate([
-        typeorm_1.CreateDateColumn({})
-    ], User.prototype, "createTime");
-    __decorate([
-        typeorm_1.UpdateDateColumn({})
-    ], User.prototype, "updateTime");
-    __decorate([
-        typeorm_1.BeforeInsert()
-    ], User.prototype, "encryptPwd");
-    __decorate([
-        typeorm_1.BeforeUpdate()
-    ], User.prototype, "encryptPwd2");
-    User = __decorate([
-        typeorm_1.Entity('user')
-    ], User);
-    return User;
+    LoginService = __decorate([
+        common_1.Injectable(),
+        __param(0, typeorm_1.InjectRepository(login_entity_1.User))
+    ], LoginService);
+    return LoginService;
 }());
-exports.User = User;
+exports.LoginService = LoginService;
