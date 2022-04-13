@@ -91,6 +91,53 @@ var SubjectController = /** @class */ (function () {
             });
         });
     };
+    SubjectController.prototype.loadAllSubject = function (req, _a) {
+        var title = _a.title;
+        return __awaiter(this, void 0, void 0, function () {
+            return __generator(this, function (_b) {
+                if (req.user.role !== 'root') {
+                    return [2 /*return*/, '没有权限！'];
+                }
+                return [2 /*return*/, this.subjectService.loadAllSubject(title)];
+            });
+        });
+    };
+    SubjectController.prototype.delSubject = function (req, info) {
+        return __awaiter(this, void 0, void 0, function () {
+            return __generator(this, function (_a) {
+                if (req.user.role !== 'root') {
+                    return [2 /*return*/, '没有权限！'];
+                }
+                return [2 /*return*/, this.subjectService.delSubject(info)];
+            });
+        });
+    };
+    SubjectController.prototype.subject = function (sub, req) {
+        return __awaiter(this, void 0, void 0, function () {
+            return __generator(this, function (_a) {
+                if (req.user.role !== 'root') {
+                    return [2 /*return*/, '没有权限！'];
+                }
+                return [2 /*return*/, this.subjectService.addSubject(sub)];
+            });
+        });
+    };
+    /**
+     * 更改题目信息
+     * @param param0 题目信息
+     * @param req token分析
+     * @returns promise
+     */
+    SubjectController.prototype.updateSubject = function (subject, req) {
+        return __awaiter(this, void 0, void 0, function () {
+            return __generator(this, function (_a) {
+                if (req.user.role !== 'root') {
+                    return [2 /*return*/, '没有权限！'];
+                }
+                return [2 /*return*/, this.subjectService.updateSubject(subject)];
+            });
+        });
+    };
     __decorate([
         swagger_1.ApiOperation({ summary: '获取心理测试成绩' }),
         swagger_1.ApiBearerAuth(),
@@ -112,6 +159,32 @@ var SubjectController = /** @class */ (function () {
         common_1.Post(),
         __param(0, common_1.Req()), __param(1, common_1.Body())
     ], SubjectController.prototype, "submitAns");
+    __decorate([
+        swagger_1.ApiOperation({ summary: '加载所有题目' }),
+        swagger_1.ApiBearerAuth(),
+        common_1.UseGuards(passport_1.AuthGuard('jwt')),
+        common_1.Get('loadAllSubject'),
+        __param(0, common_1.Req()), __param(1, common_1.Query())
+    ], SubjectController.prototype, "loadAllSubject");
+    __decorate([
+        swagger_1.ApiOperation({ summary: '删除题目' }),
+        swagger_1.ApiBearerAuth(),
+        common_1.UseGuards(passport_1.AuthGuard('jwt')),
+        common_1.Post('delSubject'),
+        __param(0, common_1.Req()), __param(1, common_1.Body())
+    ], SubjectController.prototype, "delSubject");
+    __decorate([
+        swagger_1.ApiOperation({ summary: '添加题目' }),
+        common_1.UseGuards(passport_1.AuthGuard('jwt')),
+        common_1.Post('addSubject'),
+        __param(0, common_1.Body()), __param(1, common_1.Req())
+    ], SubjectController.prototype, "subject");
+    __decorate([
+        swagger_1.ApiOperation({ summary: '修改题目信息' }),
+        common_1.UseGuards(passport_1.AuthGuard('jwt')),
+        common_1.Post('updateSubject'),
+        __param(0, common_1.Body()), __param(1, common_1.Req())
+    ], SubjectController.prototype, "updateSubject");
     SubjectController = __decorate([
         swagger_1.ApiTags('题目'),
         common_1.Controller('subject')

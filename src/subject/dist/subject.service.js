@@ -136,6 +136,76 @@ var SubjectService = /** @class */ (function () {
             });
         });
     };
+    SubjectService.prototype.loadAllSubject = function (title) {
+        return __awaiter(this, void 0, void 0, function () {
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        if (!title) return [3 /*break*/, 2];
+                        return [4 /*yield*/, this.subjectRepository.find({
+                                where: { title: "" + title }
+                            })];
+                    case 1: return [2 /*return*/, _a.sent()];
+                    case 2: return [4 /*yield*/, this.subjectRepository.query("select * from subject")];
+                    case 3: return [2 /*return*/, _a.sent()];
+                }
+            });
+        });
+    };
+    SubjectService.prototype.delSubject = function (info) {
+        return __awaiter(this, void 0, void 0, function () {
+            var p, _i, info_1, item;
+            return __generator(this, function (_a) {
+                p = [];
+                for (_i = 0, info_1 = info; _i < info_1.length; _i++) {
+                    item = info_1[_i];
+                    p.push(this.subjectRepository.query("delete from subject where id = " + item.id));
+                }
+                return [2 /*return*/, Promise.all(p).then(function () {
+                        return '删除成功！';
+                    })];
+            });
+        });
+    };
+    SubjectService.prototype.addSubject = function (subject) {
+        return __awaiter(this, void 0, void 0, function () {
+            var _this = this;
+            return __generator(this, function (_a) {
+                return [2 /*return*/, this.subjectRepository
+                        .find({ where: { title: "" + subject.title } })
+                        .then(function (res) {
+                        if (res.length === 0) {
+                            // 解决@BeforeInsert不会触发的问题
+                            var entity = Object.assign(new subject_entity_1.Subject(), subject);
+                            _this.subjectRepository.save(entity);
+                        }
+                        else {
+                            return '已存在！';
+                        }
+                    })];
+            });
+        });
+    };
+    SubjectService.prototype.updateSubject = function (subject) {
+        return __awaiter(this, void 0, void 0, function () {
+            var _this = this;
+            return __generator(this, function (_a) {
+                return [2 /*return*/, this.subjectRepository
+                        .find({ where: { title: "" + subject.title } })
+                        .then(function (res) {
+                        if (res.length === 0) {
+                            return '没有该题目！';
+                        }
+                        else {
+                            delete subject.key;
+                            delete subject.isNew;
+                            _this.subjectRepository.update({ title: "" + subject.title }, subject);
+                            return '更改成功！';
+                        }
+                    })];
+            });
+        });
+    };
     SubjectService = __decorate([
         common_1.Injectable(),
         __param(0, typeorm_1.InjectRepository(subject_entity_1.Subject)),

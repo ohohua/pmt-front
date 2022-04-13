@@ -72,7 +72,7 @@ var UserController = /** @class */ (function () {
      * @param req
      * @returns
      */
-    UserController.prototype.getParticularUserInfo = function (user, req) {
+    UserController.prototype.getParticularUserInfo = function (user) {
         return __awaiter(this, void 0, void 0, function () {
             return __generator(this, function (_a) {
                 return [2 /*return*/, this.userService.getParticularUser(user)];
@@ -200,11 +200,11 @@ var UserController = /** @class */ (function () {
         });
     };
     /**
-   * 更改用户
-   * @param param0 用户信息
-   * @param req token分析
-   * @returns promise
-   */
+     * 更改用户
+     * @param param0 用户信息
+     * @param req token分析
+     * @returns promise
+     */
     UserController.prototype.updateUser = function (user, req) {
         return __awaiter(this, void 0, void 0, function () {
             return __generator(this, function (_a) {
@@ -244,7 +244,7 @@ var UserController = /** @class */ (function () {
         swagger_1.ApiOperation({ summary: '获取特定角色用户信息' }),
         common_1.UseGuards(passport_1.AuthGuard('jwt')),
         common_1.Post('role'),
-        __param(0, common_1.Body()), __param(1, common_1.Req())
+        __param(0, common_1.Body())
     ], UserController.prototype, "getParticularUserInfo");
     __decorate([
         swagger_1.ApiOperation({ summary: '保存病例信息' }),
@@ -327,7 +327,7 @@ var UserController = /** @class */ (function () {
         __param(0, common_1.Body()), __param(1, common_1.Req())
     ], UserController.prototype, "addUser");
     __decorate([
-        swagger_1.ApiOperation({ summary: '添加用户' }),
+        swagger_1.ApiOperation({ summary: '修改用户' }),
         common_1.UseGuards(passport_1.AuthGuard('jwt')),
         common_1.Post('updateUser'),
         __param(0, common_1.Body()), __param(1, common_1.Req())

@@ -46,7 +46,7 @@ export class UserController {
   @ApiOperation({ summary: '获取特定角色用户信息' })
   @UseGuards(AuthGuard('jwt'))
   @Post('role')
-  async getParticularUserInfo(@Body() user: User, @Req() req) {
+  async getParticularUserInfo(@Body() user: User) {
     return this.userService.getParticularUser(user);
   }
 
@@ -170,7 +170,7 @@ export class UserController {
   }
 
   /**
-   * 增加用户 
+   * 增加用户
    * @param param0 用户信息
    * @param req token分析
    * @returns promise
@@ -185,33 +185,32 @@ export class UserController {
     return this.userService.addUser(user);
   }
 
-    /**
-   * 更改用户 
+  /**
+   * 更改用户
    * @param param0 用户信息
    * @param req token分析
    * @returns promise
    */
-     @ApiOperation({ summary: '添加用户' })
-     @UseGuards(AuthGuard('jwt'))
-     @Post('updateUser')
-     async updateUser(@Body() user, @Req() req) {
-       if (req.user.role !== 'root') {
-         return '没有权限！';
-       }
-       return this.userService.updateUser(user);
-     }
+  @ApiOperation({ summary: '修改用户' })
+  @UseGuards(AuthGuard('jwt'))
+  @Post('updateUser')
+  async updateUser(@Body() user, @Req() req) {
+    if (req.user.role !== 'root') {
+      return '没有权限！';
+    }
+    return this.userService.updateUser(user);
+  }
 
   /**
    * 删除用户，根据username
    * @param user  Array
-   * @param req 
+   * @param req
    * @returns promise
    */
   @ApiOperation({ summary: '删除用户' })
   @UseGuards(AuthGuard('jwt'))
   @Post('del')
   async userDel(@Body() user, @Req() req) {
-    
     if (req.user.role !== 'root') {
       return '没有权限！';
     }

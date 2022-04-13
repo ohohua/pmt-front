@@ -36,8 +36,8 @@ export class User {
   @Column({ default: () => 0 })
   answerNumber: number; // 回答数量
 
-  @Column({ default: () => false })
-  isNew: boolean; // 新用户
+  @Column({ default: () => 0 })
+  isNew: number; // 新用户
 
   @CreateDateColumn({})
   createTime: Date;

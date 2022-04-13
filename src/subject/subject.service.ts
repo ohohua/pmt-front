@@ -39,7 +39,7 @@ export class SubjectService {
           .then((result) => {
             if (!result.length) {
               // 没找到，说明没有，新建
-              let data = this.submitRepository.create({
+              const data = this.submitRepository.create({
                 userId: userId,
                 grade: gradeArr.length,
               });
@@ -74,6 +74,58 @@ export class SubjectService {
   }
 
   async loadGrade(userId) {
-    return await this.submitRepository.find({where: {userId: userId}});
+    return await this.submitRepository.find({ where: { userId: userId } });
+  }
+
+  async loadAllSubject(title) {
+    if (title) {
+      return await this.subjectRepository.find({
+        where: { title: `${title}` },
+      });
+    }
+    return await this.subjectRepository.query(`select * from subject`);
+  }
+
+  async delSubject(info) {
+    const p = [];
+    for (const item of info) {
+      p.push(
+        this.subjectRepository.query(
+          `delete from subject where id = ${item.id}`,
+        ),
+      );
+    }
+    return Promise.all(p).then(() => {
+      return '删除成功！';
+    });
+  }
+
+  async addSubject(subject) {
+    return this.subjectRepository
+      .find({ where: { title: `${subject.title}` } })
+      .then((res) => {
+        if (res.length === 0) {
+          // 解决@BeforeInsert不会触发的问题
+          const entity = Object.assign(new Subject(), subject);
+          this.subjectRepository.save(entity);
+        } else {
+          return '已存在！';
+        }
+      });
+  }
+
+  async updateSubject(subject) {
+    return this.subjectRepository
+      .find({ where: { title: `${subject.title}` } })
+      .then((res) => {
+        if (res.length === 0) {
+          return '没有该题目！';
+        } else {
+          delete subject.key;
+          delete subject.isNew;
+          this.subjectRepository.update({ title: `${subject.title}` }, subject);
+          return '更改成功！';
+        }
+      });
   }
 }

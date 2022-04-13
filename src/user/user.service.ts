@@ -131,7 +131,7 @@ export class UserService {
 
   async userDel(user) {
     const p = [];
-    for (let i of user) {
+    for (const i of user) {
       p.push(this.userRepository.delete({ username: `${i.username}` }));
     }
     return Promise.all(p).then((res) => {

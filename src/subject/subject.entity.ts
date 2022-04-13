@@ -29,7 +29,7 @@ export class Subject {
   @Column('text', { default: () => null })
   res: string;
 
-  @Column('simple-enum', { enum: ['A', 'B', 'C', 'D'], select: false})
+  @Column('simple-enum', { enum: ['A', 'B', 'C', 'D'], select: false })
   ans: string; // 答案, 直接find会隐藏，使用addSelect可以查此列
 
   @CreateDateColumn({})
@@ -38,5 +38,3 @@ export class Subject {
   @UpdateDateColumn({})
   updateTime: Date;
 }
-
-

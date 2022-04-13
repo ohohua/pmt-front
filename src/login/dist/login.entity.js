@@ -108,7 +108,7 @@ var User = /** @class */ (function () {
         typeorm_1.Column({ "default": function () { return 0; } })
     ], User.prototype, "answerNumber");
     __decorate([
-        typeorm_1.Column({ "default": function () { return false; } })
+        typeorm_1.Column({ "default": function () { return 0; } })
     ], User.prototype, "isNew");
     __decorate([
         typeorm_1.CreateDateColumn({})
