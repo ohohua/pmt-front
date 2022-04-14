@@ -253,6 +253,57 @@ var UserService = /** @class */ (function () {
             });
         });
     };
+    UserService.prototype.loadAllDisease = function (name) {
+        return __awaiter(this, void 0, void 0, function () {
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        if (!!name) return [3 /*break*/, 2];
+                        return [4 /*yield*/, this.diseaseRepository.find()];
+                    case 1: return [2 /*return*/, _a.sent()];
+                    case 2: return [4 /*yield*/, this.diseaseRepository.find({ where: { name: name } })];
+                    case 3: return [2 /*return*/, _a.sent()];
+                }
+            });
+        });
+    };
+    UserService.prototype.delDisease = function (disease) {
+        return __awaiter(this, void 0, void 0, function () {
+            var p, _i, disease_1, i;
+            return __generator(this, function (_a) {
+                console.log(disease);
+                p = [];
+                for (_i = 0, disease_1 = disease; _i < disease_1.length; _i++) {
+                    i = disease_1[_i];
+                    p.push(this.diseaseRepository["delete"]({ id: i.id }));
+                }
+                return [2 /*return*/, Promise.all(p).then(function () {
+                        return '删除成功！';
+                    })];
+            });
+        });
+    };
+    UserService.prototype.updateDisease = function (disease) {
+        return __awaiter(this, void 0, void 0, function () {
+            var _this = this;
+            return __generator(this, function (_a) {
+                return [2 /*return*/, this.diseaseRepository
+                        .find({ where: { username: "" + disease.username } })
+                        .then(function (res) {
+                        if (res.length === 0) {
+                            return '没有该账户！';
+                        }
+                        else {
+                            delete disease.key;
+                            delete disease.isNew;
+                            // const entity = Object.assign(new User(), user);
+                            _this.diseaseRepository.update({ username: "" + disease.username }, disease);
+                            return '更改成功！';
+                        }
+                    })];
+            });
+        });
+    };
     UserService = __decorate([
         common_1.Injectable(),
         __param(0, typeorm_1.InjectRepository(login_entity_1.User)),

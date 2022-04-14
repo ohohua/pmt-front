@@ -138,4 +138,41 @@ export class UserService {
       return '删除成功！';
     });
   }
+
+  async loadAllDisease(name) {
+    if (!name) {
+      return await this.diseaseRepository.find();
+    }
+    return await this.diseaseRepository.find({ where: { name: name } });
+  }
+
+  async delDisease(disease) {
+    console.log(disease);
+    const p = [];
+    for (const i of disease) {
+      p.push(this.diseaseRepository.delete({ id: i.id }));
+    }
+    return Promise.all(p).then(() => {
+      return '删除成功！';
+    });
+  }
+
+  async updateDisease(disease) {
+    return this.diseaseRepository
+      .find({ where: { username: `${disease.username}` } })
+      .then((res) => {
+        if (res.length === 0) {
+          return '没有该账户！';
+        } else {
+          delete disease.key;
+          delete disease.isNew;
+          // const entity = Object.assign(new User(), user);
+          this.diseaseRepository.update(
+            { username: `${disease.username}` },
+            disease,
+          );
+          return '更改成功！';
+        }
+      });
+  }
 }

@@ -216,4 +216,52 @@ export class UserController {
     }
     return this.userService.userDel(user);
   }
+
+  /**
+   * 获取所有病例 | 根据参数获取特定病例
+   * @param param0 用户名
+   * @param req token分析
+   * @returns promise
+   */
+  @ApiOperation({ summary: '获取所有病例 | 根据参数获取特定病例' })
+  @UseGuards(AuthGuard('jwt'))
+  @Get('loadAllDisease')
+  async loadAllDisease(@Query() { name }, @Req() req) {
+    if (req.user.role !== 'root') {
+      return '没有权限！';
+    }
+    return this.userService.loadAllDisease(name);
+  }
+
+  /**
+   * 删除病例
+   * @param param0 病例信息
+   * @param req token分析
+   * @returns promise
+   */
+  @ApiOperation({ summary: '删除病例' })
+  @UseGuards(AuthGuard('jwt'))
+  @Post('delDisease')
+  async delDisease(@Body() disease, @Req() req) {
+    if (req.user.role !== 'root') {
+      return '没有权限！';
+    }
+    return this.userService.delDisease(disease);
+  }
+
+  /**
+   * 更改病例
+   * @param param0 用户信息
+   * @param req token分析
+   * @returns promise
+   */
+  @ApiOperation({ summary: '修改病例' })
+  @UseGuards(AuthGuard('jwt'))
+  @Post('updateDisease')
+  async updateDisease(@Body() user, @Req() req) {
+    if (req.user.role !== 'root') {
+      return '没有权限！';
+    }
+    return this.userService.updateDisease(user);
+  }
 }

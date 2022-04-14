@@ -231,6 +231,55 @@ var UserController = /** @class */ (function () {
             });
         });
     };
+    /**
+     * 获取所有病例 | 根据参数获取特定病例
+     * @param param0 用户名
+     * @param req token分析
+     * @returns promise
+     */
+    UserController.prototype.loadAllDisease = function (_a, req) {
+        var name = _a.name;
+        return __awaiter(this, void 0, void 0, function () {
+            return __generator(this, function (_b) {
+                if (req.user.role !== 'root') {
+                    return [2 /*return*/, '没有权限！'];
+                }
+                return [2 /*return*/, this.userService.loadAllDisease(name)];
+            });
+        });
+    };
+    /**
+     * 删除病例
+     * @param param0 病例信息
+     * @param req token分析
+     * @returns promise
+     */
+    UserController.prototype.delDisease = function (disease, req) {
+        return __awaiter(this, void 0, void 0, function () {
+            return __generator(this, function (_a) {
+                if (req.user.role !== 'root') {
+                    return [2 /*return*/, '没有权限！'];
+                }
+                return [2 /*return*/, this.userService.delDisease(disease)];
+            });
+        });
+    };
+    /**
+     * 更改病例
+     * @param param0 用户信息
+     * @param req token分析
+     * @returns promise
+     */
+    UserController.prototype.updateDisease = function (user, req) {
+        return __awaiter(this, void 0, void 0, function () {
+            return __generator(this, function (_a) {
+                if (req.user.role !== 'root') {
+                    return [2 /*return*/, '没有权限！'];
+                }
+                return [2 /*return*/, this.userService.updateDisease(user)];
+            });
+        });
+    };
     __decorate([
         swagger_1.ApiOperation({ summary: '根据token解析某个用户信息' }),
         swagger_1.ApiBearerAuth() // swagger文档设置token
@@ -338,6 +387,24 @@ var UserController = /** @class */ (function () {
         common_1.Post('del'),
         __param(0, common_1.Body()), __param(1, common_1.Req())
     ], UserController.prototype, "userDel");
+    __decorate([
+        swagger_1.ApiOperation({ summary: '获取所有病例 | 根据参数获取特定病例' }),
+        common_1.UseGuards(passport_1.AuthGuard('jwt')),
+        common_1.Get('loadAllDisease'),
+        __param(0, common_1.Query()), __param(1, common_1.Req())
+    ], UserController.prototype, "loadAllDisease");
+    __decorate([
+        swagger_1.ApiOperation({ summary: '删除病例' }),
+        common_1.UseGuards(passport_1.AuthGuard('jwt')),
+        common_1.Post('delDisease'),
+        __param(0, common_1.Body()), __param(1, common_1.Req())
+    ], UserController.prototype, "delDisease");
+    __decorate([
+        swagger_1.ApiOperation({ summary: '修改病例' }),
+        common_1.UseGuards(passport_1.AuthGuard('jwt')),
+        common_1.Post('updateDisease'),
+        __param(0, common_1.Body()), __param(1, common_1.Req())
+    ], UserController.prototype, "updateDisease");
     UserController = __decorate([
         swagger_1.ApiTags('用户信息'),
         common_1.Controller('user')
