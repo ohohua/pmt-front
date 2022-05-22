@@ -98,6 +98,38 @@ var CommunityController = /** @class */ (function () {
             });
         });
     };
+    CommunityController.prototype.searchCommit = function (req, _a) {
+        var nickname = _a.nickname;
+        return __awaiter(this, void 0, void 0, function () {
+            return __generator(this, function (_b) {
+                if (req.user.role !== 'root') {
+                    return [2 /*return*/, '没有权限！'];
+                }
+                return [2 /*return*/, this.communityService.searchCommit(nickname)];
+            });
+        });
+    };
+    CommunityController.prototype.delComment = function (req, info) {
+        return __awaiter(this, void 0, void 0, function () {
+            return __generator(this, function (_a) {
+                if (req.user.role !== 'root') {
+                    return [2 /*return*/, '没有权限！'];
+                }
+                return [2 /*return*/, this.communityService.delComment(info)];
+            });
+        });
+    };
+    CommunityController.prototype.updateComment = function (req, info) {
+        return __awaiter(this, void 0, void 0, function () {
+            return __generator(this, function (_a) {
+                if (req.user.role !== 'root') {
+                    return [2 /*return*/, '没有权限！'];
+                }
+                console.log(info);
+                return [2 /*return*/, this.communityService.updateComment(info)];
+            });
+        });
+    };
     __decorate([
         swagger_1.ApiOperation({ summary: '保存评论信息' }),
         swagger_1.ApiBearerAuth(),
@@ -126,6 +158,27 @@ var CommunityController = /** @class */ (function () {
         common_1.Put(),
         __param(0, common_1.Body())
     ], CommunityController.prototype, "updateThump");
+    __decorate([
+        swagger_1.ApiOperation({ summary: '根据昵称搜索评论' }),
+        swagger_1.ApiBearerAuth(),
+        common_1.UseGuards(passport_1.AuthGuard('jwt')),
+        common_1.Get('search'),
+        __param(0, common_1.Req()), __param(1, common_1.Query())
+    ], CommunityController.prototype, "searchCommit");
+    __decorate([
+        swagger_1.ApiOperation({ summary: '删除评论信息' }),
+        swagger_1.ApiBearerAuth(),
+        common_1.UseGuards(passport_1.AuthGuard('jwt')),
+        common_1.Post('del'),
+        __param(0, common_1.Req()), __param(1, common_1.Body())
+    ], CommunityController.prototype, "delComment");
+    __decorate([
+        swagger_1.ApiOperation({ summary: '更新评论信息' }),
+        swagger_1.ApiBearerAuth(),
+        common_1.UseGuards(passport_1.AuthGuard('jwt')),
+        common_1.Post('update'),
+        __param(0, common_1.Req()), __param(1, common_1.Body())
+    ], CommunityController.prototype, "updateComment");
     CommunityController = __decorate([
         swagger_1.ApiTags('评论'),
         common_1.Controller('community')

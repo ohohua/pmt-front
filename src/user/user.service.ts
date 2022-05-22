@@ -62,6 +62,11 @@ export class UserService {
     SELECT username, name, age,sex, bloodType, phone, symptom, createTime, updateDate, doctorUsername FROM DISEASE WHERE doctorUsername='${doc}' AND response = ""`);
   }
 
+  async loadAboutNewsUnderPatient(doc: string): Promise<Disease> {
+    return await this.userRepository.query(`
+    SELECT username, name, age,sex, bloodType, phone, symptom, createTime, updateDate, doctorUsername, response FROM DISEASE WHERE username='${doc}'`);
+  }
+
   async loaBbyName(username: string): Promise<Disease> {
     return await this.userRepository.query(`
     SELECT username, name, age,sex, bloodType, phone, symptom, createTime, updateDate, doctorUsername FROM DISEASE WHERE username='${username}'`);

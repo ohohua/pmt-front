@@ -115,6 +115,18 @@ var UserController = /** @class */ (function () {
             });
         });
     };
+    UserController.prototype.loadAboutNewsUnderPatient = function (req) {
+        return __awaiter(this, void 0, void 0, function () {
+            var doc;
+            return __generator(this, function (_a) {
+                if (req.user.role === 'doctor') {
+                    return [2 /*return*/, '该用户是医生'];
+                }
+                doc = req.user.username;
+                return [2 /*return*/, this.userService.loadAboutNewsUnderPatient(doc)];
+            });
+        });
+    };
     /**
      * 获取病例信息
      * @param param0
@@ -313,6 +325,12 @@ var UserController = /** @class */ (function () {
         common_1.Get('underDoc'),
         __param(0, common_1.Req())
     ], UserController.prototype, "loadAboutDocUnderPatient");
+    __decorate([
+        swagger_1.ApiOperation({ summary: '病人获取医生答复' }),
+        common_1.UseGuards(passport_1.AuthGuard('jwt')),
+        common_1.Get('underRes'),
+        __param(0, common_1.Req())
+    ], UserController.prototype, "loadAboutNewsUnderPatient");
     __decorate([
         swagger_1.ApiOperation({ summary: '通过病人username获取病例信息' }),
         common_1.UseGuards(passport_1.AuthGuard('jwt')),

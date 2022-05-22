@@ -131,6 +131,16 @@ var UserService = /** @class */ (function () {
             });
         });
     };
+    UserService.prototype.loadAboutNewsUnderPatient = function (doc) {
+        return __awaiter(this, void 0, Promise, function () {
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0: return [4 /*yield*/, this.userRepository.query("\n    SELECT username, name, age,sex, bloodType, phone, symptom, createTime, updateDate, doctorUsername, response FROM DISEASE WHERE username='" + doc + "'")];
+                    case 1: return [2 /*return*/, _a.sent()];
+                }
+            });
+        });
+    };
     UserService.prototype.loaBbyName = function (username) {
         return __awaiter(this, void 0, Promise, function () {
             return __generator(this, function (_a) {

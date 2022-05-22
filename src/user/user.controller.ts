@@ -83,6 +83,17 @@ export class UserController {
     const doc = req.user.username;
     return this.userService.loadAboutDocUnderPatient(doc);
   }
+
+  @ApiOperation({ summary: '病人获取医生答复' })
+  @UseGuards(AuthGuard('jwt'))
+  @Get('underRes')
+  async loadAboutNewsUnderPatient(@Req() req) {
+    if (req.user.role === 'doctor') {
+      return '该用户是医生';
+    }
+    const doc = req.user.username;
+    return this.userService.loadAboutNewsUnderPatient(doc);
+  }
   /**
    * 获取病例信息
    * @param param0
